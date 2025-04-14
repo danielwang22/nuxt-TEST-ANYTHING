@@ -1,6 +1,6 @@
 <!-- useDiscount.ts 測試頁面 -->
 <template>
-    <div class="p-4">
+    <div class="p-4 container">
         <h1 class="text-2xl font-bold mb-6">折扣轉換測試頁面</h1>
 
         <!-- spokenToDecimal 測試區域 -->
@@ -9,22 +9,28 @@
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block mb-2">輸入 1（如：9折）</label>
-                    <input
-                        v-model="spokenToDecimalInput1"
-                        type="number"
-                        class="border py-3 px-2 w-xl rounded-lg"
-                        placeholder="請輸入口語化折扣"
-                    />
+                    <div class="flex items-center gap-3 w-full">
+                        <input
+                            v-model="spokenToDecimalInput1"
+                            type="number"
+                            class="border py-3 px-2 grow rounded-lg"
+                            placeholder="請輸入口語化折扣"
+                        />
+                        <span>折</span>
+                    </div>
                     <div class="mt-2">結果：{{ spokenToDecimalResult1 }}</div>
                 </div>
                 <div>
                     <label class="block mb-2">輸入 2（如：95折）</label>
-                    <input
-                        v-model="spokenToDecimalInput2"
-                        type="number"
-                        class="border py-3 px-2 w-xl rounded-lg"
-                        placeholder="請輸入口語化折扣"
-                    />
+                    <div class="flex items-center gap-3 w-full">
+                        <input
+                            v-model="spokenToDecimalInput2"
+                            type="number"
+                            class="border py-3 px-2 grow rounded-lg"
+                            placeholder="請輸入口語化折扣"
+                        />
+                        <span>折</span>
+                    </div>
                     <div class="mt-2">結果：{{ spokenToDecimalResult2 }}</div>
                 </div>
             </div>
@@ -35,15 +41,15 @@
             <h2 class="text-xl font-semibold mb-4">小數轉口語化折扣測試</h2>
             <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <label class="block mb-2">第一輸入 1（如：0.9）</label>
+                    <label class="block mb-2">輸入 1（如：0.9）</label>
                     <input
                         v-model="decimalToSpokenInput1"
                         type="number"
                         step="0.01"
-                        class="border py-3 px-2 w-xl rounded-lg"
+                        class="border py-3 px-2 w-full grow rounded-lg"
                         placeholder="請輸入小數折扣"
                     />
-                    <div class="mt-2">結果：{{ decimalToSpokenResult1 }}</div>
+                    <div class="mt-2">結果：{{ decimalToSpokenResult1 }} 折</div>
                 </div>
                 <div>
                     <label class="block mb-2">輸入 2（如：0.95）</label>
@@ -51,10 +57,10 @@
                         v-model="decimalToSpokenInput2"
                         type="number"
                         step="0.01"
-                        class="border py-3 px-2 w-xl rounded-lg"
+                        class="border py-3 px-2 w-full grow rounded-lg"
                         placeholder="請輸入小數折扣"
                     />
-                    <div class="mt-2">結果：{{ decimalToSpokenResult2 }}</div>
+                    <div class="mt-2">結果：{{ decimalToSpokenResult2 }} 折</div>
                 </div>
             </div>
         </div>
@@ -65,12 +71,15 @@
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block mb-2">輸入值 1（如：90）</label>
-                    <input
-                        v-model="integerInput1"
-                        type="number"
-                        class="border p-2 w-full max-w-full mb-2"
-                        placeholder="請輸入數值"
-                    />
+                    <div class="flex items-center gap-3 w-full">
+                        <input
+                            v-model="integerInput1"
+                            type="number"
+                            class="border py-3 px-2 grow rounded-lg mb-2"
+                            placeholder="請輸入數值"
+                        />
+                        <span v-if="integerFromType1.value === 'spoken'" class="mb-2">折</span>
+                    </div>
                     <Listbox v-model="integerFromType1" as="div" class="relative mb-2">
                         <ListboxButton
                             class="w-full border p-2 text-left bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-md"
@@ -145,16 +154,19 @@
                             </ListboxOptions>
                         </transition>
                     </Listbox>
-                    <div class="mt-2">結果：{{ integerResult1 }}</div>
+                    <div class="mt-2">結果：{{ integerResult1 }} {{ integerToType1.value === 'spoken' ? '折' : '' }}</div>
                 </div>
                 <div>
                     <label class="block mb-2">輸入值 2（如：95）</label>
-                    <input
-                        v-model="integerInput2"
-                        type="number"
-                        class="border p-2 w-full max-w-full mb-2"
-                        placeholder="請輸入數值"
-                    />
+                    <div class="flex items-center gap-3 w-full">
+                        <input
+                            v-model="integerInput2"
+                            type="number"
+                            class="border py-3 px-2 grow rounded-lg mb-2"
+                            placeholder="請輸入數值"
+                        />
+                        <span v-if="integerFromType2.value === 'spoken'" class="mb-2">折</span>
+                    </div>
                     <Listbox v-model="integerFromType2" as="div" class="relative mb-2">
                         <ListboxButton
                             class="w-full border p-2 text-left bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-md"
@@ -229,7 +241,7 @@
                             </ListboxOptions>
                         </transition>
                     </Listbox>
-                    <div class="mt-2">結果：{{ integerResult2 }}</div>
+                    <div class="mt-2">結果：{{ integerResult2 }} {{ integerToType2.value === 'spoken' ? '折' : '' }}</div>
                 </div>
             </div>
         </div>
@@ -240,13 +252,16 @@
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block mb-2">輸入值 1（如：0.9）</label>
-                    <input
-                        v-model="decimalInput1"
-                        type="number"
-                        step="0.01"
-                        class="border p-2 w-full max-w-full mb-2"
-                        placeholder="請輸入數值"
-                    />
+                    <div class="flex items-center gap-3 w-full">
+                        <input
+                            v-model="decimalInput1"
+                            type="number"
+                            step="0.01"
+                            class="border py-3 px-2 grow rounded-lg mb-2"
+                            placeholder="請輸入數值"
+                        />
+                        <span v-if="decimalFromType1.value === 'spoken'" class="mb-2">折</span>
+                    </div>
                     <Listbox v-model="decimalFromType1" as="div" class="relative mb-2">
                         <ListboxButton
                             class="w-full border p-2 text-left bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-md"
@@ -321,17 +336,20 @@
                             </ListboxOptions>
                         </transition>
                     </Listbox>
-                    <div class="mt-2">結果：{{ decimalResult1 }}</div>
+                    <div class="mt-2">結果：{{ decimalResult1 }} {{ decimalToType1.value === 'spoken' ? '折' : '' }}</div>
                 </div>
                 <div>
                     <label class="block mb-2">輸入值 2（如：0.95）</label>
-                    <input
-                        v-model="decimalInput2"
-                        type="number"
-                        step="0.01"
-                        class="border p-2 w-full max-w-full mb-2"
-                        placeholder="請輸入數值"
-                    />
+                    <div class="flex items-center gap-3 w-full">
+                        <input
+                            v-model="decimalInput2"
+                            type="number"
+                            step="0.01"
+                            class="border py-3 px-2 grow rounded-lg mb-2"
+                            placeholder="請輸入數值"
+                        />
+                        <span v-if="decimalFromType2.value === 'spoken'" class="mb-2">折</span>
+                    </div>
                     <Listbox v-model="decimalFromType2" as="div" class="relative mb-2">
                         <ListboxButton
                             class="w-full border p-2 text-left bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-md"
@@ -406,7 +424,7 @@
                             </ListboxOptions>
                         </transition>
                     </Listbox>
-                    <div class="mt-2">結果：{{ decimalResult2 }}</div>
+                    <div class="mt-2">結果：{{ decimalResult2 }} {{ decimalToType2.value === 'spoken' ? '折' : '' }}</div>
                 </div>
             </div>
         </div>
@@ -420,7 +438,7 @@
                     <input
                         v-model="formatInput1"
                         type="number"
-                        class="border p-2 w-full max-w-full mb-2"
+                        class="border py-3 px-2 grow w-full rounded-lg mb-2"
                         placeholder="請輸入數值"
                     />
                     <div class="flex gap-2 mb-2">
@@ -444,7 +462,7 @@
                     <input
                         v-model="formatInput2"
                         type="number"
-                        class="border p-2 w-full max-w-full mb-2"
+                        class="border py-3 px-2 grow w-full rounded-lg mb-2"
                         placeholder="請輸入數值"
                     />
                     <div class="flex gap-2 mb-2">

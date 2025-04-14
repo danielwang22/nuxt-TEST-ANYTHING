@@ -52,10 +52,11 @@ export const useDiscount = () => {
 
     /**
      * 將小數折扣轉換為口語化表示
-     * @param {number} decimal - 折扣的小數表示（如0.9、0.95）
-     * @returns {number} 口語化折扣值（如9折、95折）
+     * @param {number} decimal - 折扣的小數表示（如0.9、0.95、0.09）
+     * @returns {number} 口語化折扣值（如9折、95折、0.9折）
      */
     const decimalToSpoken = (decimal: number): number => {
+        console.log(decimal);
         if (!isNumber(decimal)) {
             throw new Error('輸入必須是有效數字');
         }
@@ -64,14 +65,24 @@ export const useDiscount = () => {
         const sign = Math.sign(decimal);
         const absDecimal = Math.abs(decimal);
 
-        // 判斷是否需要轉為十分制或百分制
-        if (absDecimal <= 0.1 || absDecimal > 1) {
-            // 大於1或小於等於0.1的小數，轉為百分制
-            return sign * (absDecimal * 100);
+        let result: number;
+        // 判斷不同範圍的處理方式
+        if (absDecimal < 0.1) {
+            // 小於 0.1 的情況，保持一位小數，Ex. 0.09 -> 0.90 折
+            result = sign * (absDecimal * 10);
+        } else if (absDecimal <= 1) {
+            // 0.1 到 1 的情況，轉為百分制，Ex. 0.9 -> 9.00 折
+            const tempResult = sign * (absDecimal * 100);
+            // 如果是 10 的倍數（如 90、80、70...），則簡化（如 9、8、7...）
+            // Ex. 0.9 -> 90 折 -> 9.00 折
+            result = tempResult % 10 === 0 ? tempResult / 10 : tempResult;
         } else {
-            // 其他情況轉為十分制
-            return sign * (absDecimal * 10);
+            // 大於 1 的情況，直接返回百分制，Ex. 1.2 -> 120.00 折
+            result = sign * (absDecimal * 100);
         }
+
+        // 將結果轉換為保留兩位小數的浮點數
+        return Number(result.toFixed(2));
     };
 
     /**
@@ -99,7 +110,7 @@ export const useDiscount = () => {
                 mainPercentage = value;
                 break;
             case 'subtract':
-                mainPercentage = 100 - value;
+                mainPercentage = Number((100 - value).toFixed(2));
                 break;
             case 'spoken':
                 // 口語化轉主折數
@@ -114,7 +125,7 @@ export const useDiscount = () => {
             case 'main':
                 return mainPercentage;
             case 'subtract':
-                return 100 - mainPercentage;
+                return Number((100 - mainPercentage).toFixed(2));
             case 'spoken':
                 // 主折數轉口語化
                 return decimalToSpoken(mainPercentage / 100);
@@ -148,7 +159,7 @@ export const useDiscount = () => {
                 mainDecimal = value;
                 break;
             case 'subtract':
-                mainDecimal = 1 - value;
+                mainDecimal = Number((1 - value).toFixed(2));
                 break;
             case 'spoken':
                 // 口語化轉小數
@@ -163,7 +174,7 @@ export const useDiscount = () => {
             case 'main':
                 return mainDecimal;
             case 'subtract':
-                return 1 - mainDecimal;
+                return Number((1 - mainDecimal).toFixed(2));
             case 'spoken':
                 // 小數轉口語化
                 return decimalToSpoken(mainDecimal);
