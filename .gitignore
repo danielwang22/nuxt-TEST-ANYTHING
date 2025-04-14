@@ -1,0 +1,54 @@
+# Nuxt dev/build outputs
+.output
+.data
+.nuxt
+.nitro
+.cache
+dist
+build
+dist-ssr
+
+# Node dependencies
+node_modules
+
+# Logs
+logs
+*.log
+
+# Misc
+.DS_Store
+.fleet
+.idea
+
+# Local Netlify folder
+.netlify
+netlify.toml
+
+# env
+.env.development
+.env.netlify
+.env.vercel
+.env.production
+.env
+
+# other
+.my_folder/*
+my_folder/*
+document/*
+.vscode/*
+__tests__/*
+.icons/*
+node/*
+openapitools.json
+
+# SSH
+*.pem
+
+# Api Info
+api/.input/*
+
+# vercel
+vercel.json
+
+# pm2
+ecosystem.config.cjs
